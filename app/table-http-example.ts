@@ -108,17 +108,28 @@ export class TableHttpExample implements OnInit {
       : this.data.forEach(row => this.selection.select(row));
   }
 
-isChecked(row){
-  console.log(row);
-  console.log(this.selection.isSelected(row));
-  this.selection.isSelected(row)
-}
+  isChecked(row) {
+    // console.log(row);
+    if (this.selection.isSelected(row)) {
+      console.log(this.selection.isSelected(row));
+      this.selection.selected.filter(s => s[1].number == row.number);
+      console.log(row);
+    }
+
+    // this.data.
+    return this.selection.isSelected(row);
+  }
   logSelection() {
     this.selection.selected.forEach(s => console.log(s));
   }
 
-  testtt() {
-    console.log("12", this.selection.selected);
+  testtt(row: any) {
+    console.log(
+      "12",
+      row,
+      this.selection.selected,
+      this.selection.isSelected(row)
+    );
   }
 }
 
