@@ -1,0 +1,73 @@
+<div class="example-container mat-elevation-z8">
+	<div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
+		<mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+		<div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+			GitHub's API rate limit has been reached. It will be reset in one minute.
+		</div>
+	</div>
+
+	<div class="example-table-container" *ngIf="(data | async) as dataLoaded">
+
+		<table mat-table [dataSource]="dataLoaded" class="example-table" matSort matSortActive="created"
+			matSortDisableClear matSortDirection="desc" (matSortChange)="applySort($event)">
+
+			<ng-container matColumnDef="select">
+				<th mat-header-cell *matHeaderCellDef>
+					<mat-checkbox (change)="$event ? masterToggle() : null"
+						[checked]="selection.hasValue() && isAllSelected()"
+						[indeterminate]="selection.hasValue() && !isAllSelected()">
+					</mat-checkbox>
+				</th>
+				<td mat-cell *matCellDef="let row">
+					<mat-checkbox (click)="$event.stopPropagation();testtt()"
+						(change)="$event ? selection.toggle(row) : null" [checked]="isChecked(row)">
+					</mat-checkbox>
+				</td>
+			</ng-container>
+			<!-- Number Column -->
+			<ng-container matColumnDef="number">
+				<th mat-header-cell *matHeaderCellDef>#</th>
+				<td mat-cell *matCellDef="let row">{{row.number}}</td>
+			</ng-container>
+
+			<!-- Title Column -->
+			<ng-container matColumnDef="title">
+				<th mat-header-cell *matHeaderCellDef>Title</th>
+				<td mat-cell *matCellDef="let row">{{row.title}}</td>
+			</ng-container>
+
+			<!-- State Column -->
+			<ng-container matColumnDef="state">
+				<th mat-header-cell *matHeaderCellDef>State</th>
+				<td mat-cell *matCellDef="let row">{{row.state}}</td>
+			</ng-container>
+
+			<!-- Created Column -->
+			<ng-container matColumnDef="created">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+					Created
+				</th>
+				<td mat-cell *matCellDef="let row">{{row.created_at | date}}</td>
+			</ng-container>
+
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	</div>
+
+	<!-- <mat-paginator [length]="resultsLength" [pageSize]="pageSize"></mat-paginator> -->
+	<div>
+		<ul>
+			<li (click)="changePage(1)">First</li>
+			<li (click)="changePage(currentPage.getValue() - 1)">Prev</li>
+			<li *ngFor="let item of createRange()" (click)="changePage(item)">{{ item }}</li>
+			<li (click)="changePage(currentPage.getValue() + 1)">Next</li>
+			<li (click)="changePage(resultsLength / pageSize)">Last</li>
+		</ul>
+	</div>
+</div>
+
+
+<!-- Copyright 2019 Google Inc. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
